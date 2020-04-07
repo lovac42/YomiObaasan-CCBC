@@ -1,7 +1,7 @@
 {
-    "allowEditing":        false,
+    "allowEditing":        true,
     "bgColor":             4294967295,
-    "checkForUpdates":     true,
+    "checkForUpdates":     false,
     "enableAnkiConnect":   false,
     "fgColor":             4278190080,
     "firstRun":            true,
@@ -15,5 +15,5 @@
     "stripReadings":       false,
     "tags":                [],
     "textContent":         "",
-    "wordWrap":            false
+    "wordWrap":            true
 }
