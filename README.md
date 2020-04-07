@@ -1,10 +1,12 @@
-# Yomichan Anki #
+# YomiObaasan for CCBC
 
-Yomichan is an Anki plugin built to help students of Japanese learn the language by reading native media on their
-computer. This application's one-click flash card creation feature makes vocabulary mining trivial, allowing you to
-focus on enjoying your reading.
+YomiObaasan is a port of Yomichan by Alex Yatskov from 2.0 with the updated japanese dictionary files taken from Yomisama by Dayjaby on 2.1.
 
-*Note: This project is no longer maintained and has been superseded by the [Yomichan](https://foosoft.net/projects/yomichan/) browser extension*.
+
+## Yomichan
+
+Yomichan is an Anki plugin built to help students of Japanese learn the language by reading native media on their computer. This application's one-click flash card creation feature makes vocabulary mining trivial, allowing you to focus on enjoying your reading.
+
 
 ## Installation ##
 
