@@ -31,21 +31,21 @@
        <item>
         <widget class="QLabel" name="labelVersion">
          <property name="text">
-          <string>&lt;b&gt;Yomichan {0}&lt;/b&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;YomiObaasan {0}&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>(c) 2013 by Alex Yatskov</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(c) 2013-2017 by Alex Yatskov&lt;br&gt;(c) 2015-2020 by David Jablonski&lt;br&gt;(c) 2020 by Lovac42&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-             <string>&lt;a href = &quot;https://foosoft.net/projects/yomichan&quot;&gt;https://foosoft.net/projects/yomichan&lt;/a&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/lovac42/YomiObaasan-CCBC&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/lovac42/YomiObaasan-CCBC&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="openExternalLinks">
           <bool>true</bool>
@@ -66,6 +66,21 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <italic>true</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string notr="true">YomiObaasan is a port of Yomichan from 2.0 with the updated japanese dictionary files taken from Yomisama.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

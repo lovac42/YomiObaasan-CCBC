@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabGeneral">
       <attribute name="title">
@@ -47,6 +47,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="checkCheckForUpdates">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="text">
           <string>Check for updates</string>
          </property>
@@ -154,7 +157,7 @@
        <bool>false</bool>
       </property>
       <attribute name="title">
-       <string>Anki</string>
+       <string>Extracts</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>

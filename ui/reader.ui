@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>Yomichan</string>
+   <string>YomiObaasan</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -43,7 +43,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -83,7 +83,6 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
-    <addaction name="actionHomepage"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -175,7 +174,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockAnki">
    <property name="windowTitle">
-    <string>Anki</string>
+    <string>Extracts</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -439,7 +438,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Anki</string>
+    <string>&amp;Extracts</string>
    </property>
   </action>
   <action name="actionFeedback">
