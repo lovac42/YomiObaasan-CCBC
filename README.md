@@ -1,6 +1,6 @@
 # YomiObaasan for CCBC
 
-YomiObaasan is a port of Yomichan by Alex Yatskov from 2.0 with the updated japanese dictionary files taken from Yomisama by Dayjaby on 2.1.
+YomiObaasan is a port of Yomichan by Alex Yatskov from 2.0 with the updated japanese dictionary files taken from Yomisama by David Jablonski on 2.1.
 
 
 ## Yomichan
