@@ -1,48 +1,33 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2013  Alex Yatskov
-# This module is based on Rikaichan code written by Jonathan Zarate
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-import re
+import operator
+from . import util
 
 
 class Translator:
     def __init__(self, deinflector, dictionary):
         self.deinflector = deinflector
-        self.dictionary  = dictionary
+        self.dictionary = dictionary
 
 
     def findTerm(self, text, wildcards=False):
-        if wildcards:
-            text = re.sub(u'[\*＊]', u'%', text)
-            text = re.sub(u'[\?？]', u'_', text)
-
         groups = {}
-        for i in xrange(len(text), 0, -1):
-            term = text[:i]
+        if wildcards and isinstance(text,list):
+            self.processTerm(groups,u"".join(text),u"".join(text),root=text,wildcards=True)
+        else:
+            text = util.sanitize(text, wildcards=wildcards)
 
-            dfs = self.deinflector.deinflect(term, lambda term: [d['tags'] for d in self.dictionary.findTerm(term)])
-            if dfs is None:
-                continue
+            for i in range(len(text), 0, -1):
+                term = text[:i]
 
-            for df in dfs:
-                self.processTerm(groups, **df)
+                dfs = self.deinflector.deinflect(term, self.validator)
+                if dfs is None:
+                    self.processTerm(groups, term, term, wildcards=wildcards)
+                else:
+                    for df in dfs:
+                        self.processTerm(groups, term, **df)
 
-        definitions = groups.values()
+        definitions = [self.formatResult(group) for group in groups.items()]
         definitions = sorted(
             definitions,
             reverse=True,
@@ -62,11 +47,13 @@ class Translator:
 
 
     def findKanji(self, text):
-        processed = {}
-        results   = []
+        text = util.sanitize(text, kana=False)
+        results = list()
+
+        processed = dict()
         for c in text:
             if c not in processed:
-                match = self.dictionary.findKanji(c)
+                match = self.dictionary.findCharacter(c)
                 if match is not None:
                     results.append(match)
                 processed[c] = match
@@ -74,23 +61,30 @@ class Translator:
         return results
 
 
-    def processTerm(self, groups, source, tags, rules=[], root='', wildcards=False):
+    def processTerm(self, groups, term, source, rules=list(), root=str(), wildcards=False):
+        root = root or source
+
         for entry in self.dictionary.findTerm(root, wildcards):
-            if entry['id'] in groups:
-                continue
+            key = entry['expression'], entry['reading'], entry['glossary']
+            if key not in groups:
+                groups[key] = term, entry['defs'], entry['refs'], entry['tags'], source, rules
 
-            matched = len(tags) == 0
-            for tag in tags:
-                if tag in entry['tags']:
-                    matched = True
-                    break
 
-            if matched:
-                groups[entry['id']] = {
-                    'expression': entry['expression'],
-                    'reading':    entry['reading'],
-                    'glossary':   entry['glossary'],
-                    'tags':       entry['tags'],
-                    'source':     source,
-                    'rules':      rules
-                }
+    def formatResult(self, group):
+        (expression, reading, glossary), (term, defs, refs, tags, source, rules) = group
+        return {
+            'defs': defs,
+            'refs': refs,
+            'expression': expression,
+            'reading': reading,
+            'glossary': glossary,
+            'rules': rules,
+            'source': source,
+            'term': term,
+            'tags': tags,
+            'language': u'Japanese'
+        }
+
+
+    def validator(self, term):
+        return [d['tags'] for d in self.dictionary.findTerm(term)]

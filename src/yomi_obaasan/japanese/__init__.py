@@ -16,10 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import deinflect
-import dictionary
+from . import deinflect
+from . import dictionary
 import os.path
-import translate
+from . import translate
 
 
 def initLanguage():

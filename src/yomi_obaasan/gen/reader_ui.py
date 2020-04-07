@@ -311,4 +311,4 @@ class Ui_MainWindowReader(object):
         self.actionKindleDeck.setText(_translate("MainWindowReader", "&Kindle deck...", None))
         self.actionWordList.setText(_translate("MainWindowReader", "&Word list...", None))
 
-import resources_rc
+from . import resources_rc

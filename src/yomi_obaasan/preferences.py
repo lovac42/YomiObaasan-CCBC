@@ -18,10 +18,10 @@
 
 from PyQt4 import QtGui, QtCore
 import copy
-import gen.preferences_ui
+from .gen import preferences_ui
 
 
-class DialogPreferences(QtGui.QDialog, gen.preferences_ui.Ui_DialogPreferences):
+class DialogPreferences(QtGui.QDialog, preferences_ui.Ui_DialogPreferences):
     def __init__(self, parent, preferences, anki):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -80,8 +80,8 @@ class DialogPreferences(QtGui.QDialog, gen.preferences_ui.Ui_DialogPreferences):
 
     def dialogToProfile(self):
         self.setActiveProfile({
-            'deck':   unicode(self.comboBoxDeck.currentText()),
-            'model':  unicode(self.comboBoxModel.currentText()),
+            'deck':   self.comboBoxDeck.currentText(),
+            'model':  self.comboBoxModel.currentText(),
             'fields': self.ankiFields()
         })
 
@@ -154,8 +154,8 @@ class DialogPreferences(QtGui.QDialog, gen.preferences_ui.Ui_DialogPreferences):
         result = {}
 
         for i in range(0, self.tableFields.rowCount()):
-            itemName  = unicode(self.tableFields.item(i, 0).text())
-            itemValue = unicode(self.tableFields.item(i, 1).text())
+            itemName  = self.tableFields.item(i, 0).text()
+            itemValue = self.tableFields.item(i, 1).text()
             result[itemName] = itemValue
 
         return result
@@ -180,7 +180,7 @@ class DialogPreferences(QtGui.QDialog, gen.preferences_ui.Ui_DialogPreferences):
 
 
     def onFontFamilyChanged(self, font):
-        self.preferences['fontFamily'] = unicode(font.family())
+        self.preferences['fontFamily'] = font.family()
         self.updateSampleText()
 
 

@@ -16,7 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+
+
 c = {
-    'appVersion': '0.25b',
+    'appVersion': '1.0.0b',
     'apiVersion': 1
 }

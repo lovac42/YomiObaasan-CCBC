@@ -60,7 +60,7 @@ class Preferences(object):
 
 
     def recentFiles(self):
-        return map(operator.itemgetter('path'), self['recentFiles'])
+        return [x['path'] for x in self['recentFiles']]
 
 
     def updateFactTags(self, tags):

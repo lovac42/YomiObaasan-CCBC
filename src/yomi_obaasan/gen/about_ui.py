@@ -772,4 +772,4 @@ class Ui_DialogAbout(object):
 "<http://www.gnu.org/philosophy/why-not-lgpl.html>.\n"
 "", None))
 
-import resources_rc
+from . import resources_rc

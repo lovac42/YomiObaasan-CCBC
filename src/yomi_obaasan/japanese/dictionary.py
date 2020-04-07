@@ -1,93 +1,77 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2013  Alex Yatskov
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
 import operator
 import sqlite3
 
 
 class Dictionary:
-    def __init__(self, filename, index=True):
-        self.db = sqlite3.connect(filename)
-        self.indices = set()
+    def __init__(self, filename, index=True, load=True):
+        self.filename = filename
+        with open(filename) as f:
+            pass
+        if load:
+            self.db = sqlite3.connect(filename)
+            def isWord(tags):
+                self.tags = tags.split(" ")
+                return not set(tags.split(" ")).intersection(["p","m","f","g","h","s","u"])
+            self.db.create_function("isWord",1,isWord)
+            self.indices = set()
 
 
-    def findTerm(self, text, wildcards=False):
-        self.requireIndex('Vocab', 'expression')
-        self.requireIndex('Vocab', 'reading')
-        self.requireIndex('VocabGloss', 'vocabId')
+    def findTerm(self, word, wildcards=False):
+        self.requireIndex('Terms', 'expression')
+        self.requireIndex('Terms', 'reading')
 
         cursor = self.db.cursor()
+        if wildcards and isinstance(word,list):
+            def constr(x):
+                return u"expression LIKE \"%{0}%\"".format(x)
+            query = u" OR ".join(map(constr,word))
+            self.query = query
+            cursor.execute(u'SELECT * FROM Terms WHERE ('+query+u') AND isWord(tags) AND glossary NOT LIKE "%(obsc)%" AND glossary NOT LIKE "%(arch)%"')
+        else:
+            cursor.execute('SELECT * FROM Terms WHERE expression {0} ? OR\
+                           reading=? LIMIT 100'.format('LIKE' if
+                                                                    wildcards
+                                                                    else '='),
+                           (word, word))
 
-        definitions = []
-        cursor.execute('SELECT * FROM Vocab WHERE expression {0} ? OR reading=?'.format('LIKE' if wildcards else '='), (text, text))
-        for vocabId, expression, reading, tags in cursor.fetchall():
-            tags = tags.split()
-
-            cursor.execute('SELECT glossary From VocabGloss WHERE vocabId=?', (vocabId,))
-            glossary = map(operator.itemgetter(0), cursor)
-
-            #
-            # TODO: Handle addons through data.
-            #
-
-            addons = []
-            for tag in tags:
-                if tag.startswith('v5') and tag != 'v5':
-                    addons.append('v5')
-                elif tag.startswith('vs-'):
-                    addons.append('vs')
-
-            definitions.append({
-                'id':         vocabId,
+        results = list()
+        for fetch in cursor.fetchall():
+            if len(fetch)==6:
+                expression, reading, glossary, tags, defs, refs = fetch
+            else:
+                expression, reading, glossary, tags = fetch
+                defs = refs = ''
+            results.append({
                 'expression': expression,
-                'reading':    reading,
-                'glossary':   glossary,
-                'tags':       tags + addons,
-                'addons':     addons
+                'reading': reading,
+                'glossary': glossary,
+                'tags': tags.split(),
+                'defs': defs,
+                'refs': refs
             })
 
-        return definitions
+        return results
 
 
-    def findKanji(self, text):
-        assert len(text) == 1
-
+    def findCharacter(self, character):
+        assert len(character) == 1
         self.requireIndex('Kanji', 'character')
-        self.requireIndex('KanjiGloss', 'kanjiId')
 
         cursor = self.db.cursor()
+        cursor.execute('SELECT * FROM Kanji WHERE character=? LIMIT 1', character)
 
-        cursor.execute('SELECT * FROM Kanji WHERE character=? LIMIT 1', text)
         query = cursor.fetchone()
-        if query is None:
-            return
-
-        kanjiId, character, kunyomi, onyomi = query
-        cursor.execute('SELECT glossary From KanjiGloss WHERE kanjiId=?', (kanjiId,))
-        glossary = map(operator.itemgetter(0), cursor)
-
-        return {
-            'id':        kanjiId,
-            'character': character,
-            'kunyomi':   [] if kunyomi is None else kunyomi.split(),
-            'onyomi':    [] if onyomi is None else onyomi.split(),
-            'glossary':  glossary
-        }
+        if query is not None:
+            character, kunyomi, onyomi, glossary, ongroup = query
+            return {
+                'character': character,
+                'kunyomi': kunyomi,
+                'onyomi': onyomi,
+                'glossary': glossary,
+                'ongroup': ongroup
+            }
 
 
     def requireIndex(self, table, column):

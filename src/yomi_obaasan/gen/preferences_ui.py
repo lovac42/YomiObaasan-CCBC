@@ -219,4 +219,4 @@ class Ui_DialogPreferences(object):
         self.label_3.setText(_translate("DialogPreferences", "(see the <a href=\"https://foosoft.net/projects/yomichan-chrome-ext\">extension page</a> for details)", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabAnki), _translate("DialogPreferences", "Anki", None))
 
-import resources_rc
+from . import resources_rc

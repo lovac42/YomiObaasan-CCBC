@@ -17,16 +17,16 @@
 
 
 from PyQt4 import QtGui, QtCore
-import about
-import constants
-import gen.reader_ui
+from . import about
+from . import constants
+from .gen import reader_ui
 import os
-import preferences
-import reader_util
-import updates
+from . import preferences
+from . import reader_util
+from . import updates
 
 
-class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
+class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
     class State:
         def __init__(self):
             self.filename       = u''
@@ -283,17 +283,17 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
 
 
     def onVocabDefsAnchorClicked(self, url):
-        command, index = unicode(url.toString()).split(':')
+        command, index = url.toString().split(':')
         self.executeVocabCommand(command, int(index))
 
 
     def onKanjiDefsAnchorClicked(self, url):
-        command, index = unicode(url.toString()).split(':')
+        command, index = url.toString().split(':')
         self.executeKanjiCommand(command, int(index))
 
 
     def onVocabDefSearchReturn(self):
-        text = unicode(self.textVocabSearch.text())
+        text = self.textVocabSearch.text()
         self.state.vocabDefs, length = self.language.findTerm(text, True)
         self.updateVocabDefs()
         if self.dockKanji.isVisible():
@@ -302,7 +302,7 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
 
 
     def onKanjiDefSearchReturn(self):
-        text = unicode(self.textKanjiSearch.text())
+        text = self.textKanjiSearch.text()
         self.state.kanjiDefs = self.language.findKanji(text)
         self.updateKanjiDefs()
 
@@ -337,7 +337,6 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
 
     def openFile(self, filename):
         try:
-            filename = unicode(filename)
             with open(filename) as fp:
                 content = fp.read()
         except IOError:
@@ -372,7 +371,7 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
 
     def closeFile(self):
         if self.preferences['rememberTextContent']:
-            self.preferences['textContent'] = unicode(self.textContent.toPlainText())
+            self.preferences['textContent'] = self.textContent.toPlainText()
 
         self.setWindowTitle('Yomichan')
         self.textContent.setPlainText(u'')
@@ -381,8 +380,8 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
 
 
     def findText(self, text):
-        content = unicode(self.textContent.toPlainText())
-        index   = content.find(unicode(text), self.state.searchPosition)
+        content = self.textContent.toPlainText()
+        index   = content.find(text, self.state.searchPosition)
 
         if index == -1:
             wrap = self.state.searchPosition != 0
@@ -413,7 +412,7 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
             return False
 
         fields     = reader_util.formatFields(profile['fields'], markup)
-        tagsSplit  = reader_util.splitTags(unicode(self.comboTags.currentText()))
+        tagsSplit  = reader_util.splitTags(self.comboTags.currentText())
         tagsJoined = ' '.join(tagsSplit)
 
         tagIndex = self.comboTags.findText(tagsJoined)
@@ -490,7 +489,7 @@ class MainWindowReader(QtGui.QMainWindow, gen.reader_ui.Ui_MainWindowReader):
         samplePosStart = self.state.scanPosition
         samplePosEnd   = self.state.scanPosition + self.preferences['scanLength']
 
-        content           = unicode(self.textContent.toPlainText())
+        content           = self.textContent.toPlainText()
         contentSample     = content[samplePosStart:samplePosEnd]
         contentSampleFlat = contentSample.replace(u'\n', u'')
 

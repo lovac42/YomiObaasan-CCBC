@@ -17,11 +17,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+
+
+
+
 from PyQt4 import QtGui
-from yomi_base import japanese
-from yomi_base.anki_connect import AnkiConnect
-from yomi_base.preference_data import Preferences
-from yomi_base.reader import MainWindowReader
+from . import japanese
+from .anki_connect import AnkiConnect
+from .preference_data import Preferences
+from .reader import MainWindowReader
 import sys
 
 
@@ -93,5 +101,5 @@ class YomichanStandalone(Yomichan):
 if __name__ == '__main__':
     instance = YomichanStandalone()
 else:
-    from yomi_base import anki_bridge
+    from . import anki_bridge
     instance = YomichanPlugin()

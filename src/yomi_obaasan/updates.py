@@ -17,20 +17,20 @@
 
 
 from PyQt4 import QtCore, QtGui
-import constants
-import gen.updates_ui
+from . import constants
+from .gen import updates_ui
 import json
-import urllib2
+from urllib.request import urlopen
 
 
-class DialogUpdates(QtGui.QDialog, gen.updates_ui.Ui_DialogUpdates):
+class DialogUpdates(QtGui.QDialog, updates_ui.Ui_DialogUpdates):
     def __init__(self, parent, versions):
         QtGui.QDialog.__init__(self, parent)
         self.setupUi(self)
 
         self.updateHtml(versions)
         self.labelUpdates.setText(
-            unicode(self.labelUpdates.text()).format(
+            self.labelUpdates.text().format(
                 constants.c['appVersion'],
                 versions['latest']
             )
@@ -60,7 +60,7 @@ class UpdateFinder(QtCore.QThread):
         updates = []
 
         try:
-            fp = urllib2.urlopen('https://foosoft.net/projects/yomichan/dl/updates.json')
+            fp = urlopen('https://foosoft.net/projects/yomichan/dl/updates.json')
             updates = json.loads(fp.read())
             fp.close()
 

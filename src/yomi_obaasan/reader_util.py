@@ -29,7 +29,7 @@ def decodeContent(content):
     for encoding in encodings:
         try:
             return content.decode(encoding), encoding
-        except UnicodeDecodeError, e:
+        except (UnicodeDecodeError, e):
             errors[encoding] = e[2]
 
     encoding = sorted(errors, key=errors.get, reverse=True)[0]
@@ -48,7 +48,7 @@ def findSentence(content, position):
     quoteStack = []
 
     start = 0
-    for i in xrange(position, start, -1):
+    for i in range(position, start, -1):
         c = content[i]
 
         if not quoteStack and (c in terminators or c in quotesFwd or c == '\n'):
@@ -63,7 +63,7 @@ def findSentence(content, position):
     quoteStack = []
 
     end = len(content)
-    for i in xrange(position, end):
+    for i in range(position, end):
         c = content[i]
 
         if not quoteStack:
@@ -108,7 +108,7 @@ def markupVocabExp(definition):
     return {
         'expression': definition['expression'],
         'reading':    definition['reading'] or u'',
-        'glossary':   '; '.join(definition['glossary']),
+        'glossary':   ''.join(definition['glossary']),
         'sentence':   definition.get('sentence'),
         'summary':    summary
     }
@@ -119,14 +119,14 @@ def markupVocabReading(definition):
         return {
             'expression': definition['reading'],
             'reading':    u'',
-            'glossary':   '; '.join(definition['glossary']),
+            'glossary':   ''.join(definition['glossary']),
             'sentence':   definition.get('sentence'),
             'summary':    definition['reading']
         }
 
 
 def copyVocabDef(definition):
-    glossary = '; '.join(definition['glossary'])
+    glossary = ''.join(definition['glossary'])
     if definition['reading']:
         result = u'{0}\t{1}\t{2}\n'.format(definition['expression'], definition['reading'], glossary)
     else:
@@ -138,9 +138,9 @@ def copyVocabDef(definition):
 def markupKanji(definition):
     return {
         'character': definition['character'],
-        'onyomi':    ', '.join(definition['onyomi']),
-        'kunyomi':   ', '.join(definition['kunyomi']),
-        'glossary':  ', '.join(definition['glossary']),
+        'onyomi':    ''.join(definition['onyomi']),
+        'kunyomi':   ''.join(definition['kunyomi']),
+        'glossary':  ''.join(definition['glossary']),
         'summary':   definition['character']
     }
 
@@ -148,9 +148,9 @@ def markupKanji(definition):
 def copyKanjiDef(definition):
     result = u'{0}\t{1}\t{2}\t{3}'.format(
         definition['character'],
-        ', '.join(definition['kunyomi']),
-        ', '.join(definition['onyomi']),
-        ', '.join(definition['glossary'])
+        ''.join(definition['kunyomi']),
+        ''.join(definition['onyomi']),
+        ''.join(definition['glossary'])
     )
 
     QtGui.QApplication.clipboard().setText(result)
@@ -196,10 +196,11 @@ def buildVocabDef(definition, index, query):
         if query('vocab', markupVocabReading(definition)):
             links += '<a href="addVocabReading:{0}"><img src="://img/img/icon_add_reading.png" align="right"></a>'.format(index)
 
-    glossary = u'<ol>'
-    for g in definition['glossary']:
-        glossary += u'<li>{0}</li>'.format(g)
-    glossary += u'</ol>'
+    # glossary = u'<ol><li>'
+    # for g in definition['glossary']:
+        # glossary += u'<li>{0}</li>'.format(g)
+    glossary = definition['glossary']
+    # glossary += u'</li></ol>'
 
     expression = u'<span class="expression">'
     if 'P' in definition['tags']:
@@ -208,20 +209,13 @@ def buildVocabDef(definition, index, query):
         expression += definition['expression']
     expression += u'</span>'
 
-    html = u'''
+    html = f'''
         <span class="links">{links}</span>
         {expression}
         <span class="reading">{reading}</span>
         <span class="rules">{rules}</span>
         <span class="glossary">{glossary}<br></span>
-        <br clear="all">'''.format(
-            links      = links,
-            expression = expression,
-            reading    = reading,
-            glossary   = glossary,
-            rules      = rules
-        )
-
+        <br clear="all">'''
     return html
 
 
@@ -241,8 +235,8 @@ def buildKanjiDef(definition, index, query):
     if query is not None and query('kanji', markupKanji(definition)):
         links += '<a href="addKanji:{0}"><img src="://img/img/icon_add_expression.png" align="right"></a>'.format(index)
 
-    readings = ', '.join(definition['kunyomi'] + definition['onyomi'])
-    glossary = ', '.join(definition['glossary'])
+    readings = ''.join(definition['kunyomi'] + definition['onyomi'])
+    glossary = ''.join(definition['glossary'])
 
     html = u'''
         <span class="links">{links}</span>
@@ -275,7 +269,7 @@ def extractKindleDeck(filename):
     words = []
 
     try:
-        with sqlite3.connect(unicode(filename)) as db:
+        with sqlite3.connect(filename) as db:
             for row in db.execute('select word from WORDS'):
                 words.append(row[0])
     except sqlite3.OperationalError:
@@ -287,7 +281,7 @@ def extractKindleDeck(filename):
 def extractWordList(filename):
     words = []
 
-    with codecs.open(unicode(filename), 'rb', 'utf-8') as fp:
+    with codecs.open(filename, 'rb', 'utf-8') as fp:
         words = re.split('[;,\s]', fp.read())
 
     return filter(None, words)

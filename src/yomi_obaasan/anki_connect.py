@@ -18,8 +18,8 @@
 
 
 from PyQt4 import QtCore
-from ajax import AjaxServer
-from constants import c
+from .ajax import AjaxServer
+from .constants import c
 
 
 class AnkiConnect:

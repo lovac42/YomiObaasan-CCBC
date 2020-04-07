@@ -19,8 +19,7 @@
 import anki
 import aqt
 import hashlib
-import urllib2
-
+from urllib.request import urlopen, quote, URLError
 
 #
 # Audio helpers
@@ -35,13 +34,13 @@ def audioBuildFilename(kana, kanji):
 
 
 def audioDownload(kana, kanji):
-    url = 'http://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji={}'.format(urllib2.quote(kanji.encode('utf-8')))
+    url = 'http://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji={}'.format(quote(kanji.encode('utf-8')))
     if kana:
-        url += '&kana={}'.format(urllib2.quote(kana.encode('utf-8')))
+        url += '&kana={}'.format(quote(kana.encode('utf-8')))
 
     try:
-        resp = urllib2.urlopen(url)
-    except urllib2.URLError:
+        resp = urlopen(url)
+    except URLError:
         return None
 
     if resp.code != 200:
@@ -139,7 +138,7 @@ class Anki:
 
 
     def addUiAction(self, action):
-        self.window().form.menuTools.addAction(action)
+        self.window().form.menuAddon.addAction(action)
 
 
     def collection(self):
