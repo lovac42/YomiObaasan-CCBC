@@ -16,63 +16,60 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+# The files in this addon may have been modified for CCBC, and may not be the same as the original.
+
+
 import codecs
 import json
 import operator
 import os
 
+from .config import Config
+
 
 class Preferences(object):
-    def __init__(self):
-        self.filename = os.path.expanduser(u'~/.yomichan.json')
-        self.defaults = os.path.join(os.path.dirname(__file__), u'defaults.json')
-        self.settings = {}
+    conf = Config("YomiObaasan")
 
+    # def __init__(self):
 
     def __getitem__(self, name):
-        return self.settings.get(name)
-
+        return self.conf.get(name)
 
     def __setitem__(self, name, value):
-        self.settings[name] = value
-
-
-    def load(self):
-        with codecs.open(self.defaults, 'rb', 'utf-8') as fp:
-            self.settings = json.load(fp)
-
-        try:
-            if os.path.exists(self.filename):
-                with codecs.open(self.filename, 'rb', 'utf-8') as fp:
-                    self.settings.update(json.load(fp))
-        except ValueError:
-            pass
-
+        self.conf.set(name, value)
 
     def save(self):
-        with codecs.open(self.filename, 'wb', 'utf-8') as fp:
-            json.dump(self.settings, fp, indent=4, sort_keys=True)
+        self.conf.save()
 
 
     def filePosition(self, filename):
-        matches = filter(lambda f: f['path'] == filename, self['recentFiles'])
+        rfs = self.conf.get("recentFiles", [])
+        matches = list(filter(lambda f: f['path'] == filename, rfs))
         return 0 if len(matches) == 0 else matches[0]['position']
 
 
     def recentFiles(self):
-        return [x['path'] for x in self['recentFiles']]
+        rfs = self.conf.get("recentFiles", [])
+        return [x['path'] for x in rfs]
 
 
     def updateFactTags(self, tags):
-        if tags in self['tags']:
-            self['tags'].remove(tags)
-        self['tags'].insert(0, tags)
+        tag_list = self.conf.get("tags", [])
+        if tags in tag_list:
+            tag_list.remove(tags)
+        tag_list.insert(0, tags)
 
 
     def updateRecentFile(self, filename, position):
-        self['recentFiles'] = filter(lambda f: f['path'] != filename, self['recentFiles'])
-        self['recentFiles'].insert(0, {'path': filename, 'position': position})
+        rfs = self.conf.get("recentFiles", [])
+        rfs = list(filter(lambda f: f['path'] != filename, rfs))
+        rfs.insert(0, {'path': filename, 'position': position})
+        self.conf.set("recentFiles", rfs)
 
 
     def clearRecentFiles(self):
-        self['recentFiles'] = []
+        self.conf.set("recentFiles", [])

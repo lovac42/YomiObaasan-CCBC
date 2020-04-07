@@ -29,7 +29,7 @@ def decodeContent(content):
     for encoding in encodings:
         try:
             return content.decode(encoding), encoding
-        except (UnicodeDecodeError, e):
+        except UnicodeDecodeError as e:
             errors[encoding] = e[2]
 
     encoding = sorted(errors, key=errors.get, reverse=True)[0]

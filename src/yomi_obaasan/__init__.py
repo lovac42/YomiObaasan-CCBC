@@ -38,7 +38,6 @@ class Yomichan:
         self.language = japanese.initLanguage()
 
         self.preferences = Preferences()
-        self.preferences.load()
 
 
 class YomichanPlugin(Yomichan):
@@ -55,7 +54,7 @@ class YomichanPlugin(Yomichan):
         separator.setSeparator(True)
         self.anki.addUiAction(separator)
 
-        action = QtGui.QAction(QtGui.QIcon(':/img/img/icon_logo_32.png'), '&Yomichan...', self.parent)
+        action = QtGui.QAction(QtGui.QIcon(':/img/img/icon_logo_32.png'), '&YomiObaasan...', self.parent)
         action.setIconVisibleInMenu(True)
         action.setShortcut('Ctrl+Y')
         action.triggered.connect(self.onShowRequest)

@@ -90,8 +90,8 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
         self.textVocabSearch.returnPressed.connect(self.onVocabDefSearchReturn)
         self.updates.updateResult.connect(self.onUpdaterSearchResult)
 
-        if self.preferences['checkForUpdates']:
-            self.updates.start()
+        # if self.preferences['checkForUpdates']:
+            # self.updates.start()
 
 
     def applyPreferences(self):
@@ -108,8 +108,8 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
         if self.preferences['firstRun']:
             QtGui.QMessageBox.information(
                 self,
-                'Yomichan',
-                'This may be the first time you are running Yomichan.\n' \
+                'YomiObaasan',
+                'This may be the first time you are running YomiObaasan.\n' \
                 'Please take some time to configure this extension.'
             )
 
@@ -278,7 +278,7 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
 
 
     def onActionHomepage(self):
-        url = QtCore.QUrl('https://foosoft.net/projects/yomichan')
+        url = QtCore.QUrl('https://github.com/lovac42/YomiObaasan-CCBC')
         QtGui.QDesktopServices().openUrl(url)
 
 
@@ -337,11 +337,11 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
 
     def openFile(self, filename):
         try:
-            with open(filename) as fp:
+            with open(filename, 'rb') as fp:
                 content = fp.read()
         except IOError:
             self.setStatus(u'Failed to load file {0}'.format(filename))
-            QtGui.QMessageBox.critical(self, 'Yomichan', 'Cannot open file for read')
+            QtGui.QMessageBox.critical(self, 'YomiObaasan', 'Cannot open file for read')
             return
 
         self.closeFile()
@@ -366,14 +366,14 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
             self.textContent.centerCursor()
 
         self.setStatus(u'Loaded file {0}'.format(filename))
-        self.setWindowTitle(u'Yomichan - {0} ({1})'.format(os.path.basename(filename), encoding))
+        self.setWindowTitle(u'YomiObaasan - {0} ({1})'.format(os.path.basename(filename), encoding))
 
 
     def closeFile(self):
         if self.preferences['rememberTextContent']:
             self.preferences['textContent'] = self.textContent.toPlainText()
 
-        self.setWindowTitle('Yomichan')
+        self.setWindowTitle('YomiObaasan')
         self.textContent.setPlainText(u'')
         self.updateRecentFile(False)
         self.state = self.State()
@@ -389,7 +389,7 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
             if wrap:
                 self.findText(text)
             else:
-                QtGui.QMessageBox.information(self, 'Yomichan', 'Search text not found')
+                QtGui.QMessageBox.information(self, 'YomiObaasan', 'Search text not found')
         else:
             self.state.searchPosition = index + len(text)
             cursor = self.textContent.textCursor()
