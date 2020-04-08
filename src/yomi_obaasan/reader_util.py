@@ -96,7 +96,7 @@ def formatFields(fields, markup):
 
 
 def splitTags(tags):
-    return filter(lambda tag: tag.strip(), re.split('[;,\s]', tags))
+    return list(filter(lambda tag: tag.strip(), re.split('[;,\s]', tags)))
 
 
 def markupVocabExp(definition):
@@ -284,4 +284,4 @@ def extractWordList(filename):
     with codecs.open(filename, 'rb', 'utf-8') as fp:
         words = re.split('[;,\s]', fp.read())
 
-    return filter(None, words)
+    return list(filter(None, words))
