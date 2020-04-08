@@ -80,25 +80,3 @@ class YomichanPlugin(Yomichan):
     def onWindowClose(self):
         self.window = None
 
-
-class YomichanStandalone(Yomichan):
-    def __init__(self):
-        Yomichan.__init__(self)
-
-        self.application = QtGui.QApplication(sys.argv)
-        self.window = MainWindowReader(
-            None,
-            self.preferences,
-            self.language,
-            filename=sys.argv[1] if len(sys.argv) >= 2 else None
-        )
-
-        self.window.show()
-        self.application.exec_()
-
-
-if __name__ == '__main__':
-    instance = YomichanStandalone()
-else:
-    from . import anki_bridge
-    instance = YomichanPlugin()
