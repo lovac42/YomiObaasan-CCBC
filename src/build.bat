@@ -11,7 +11,7 @@ echo %VERSION% >%REPO%\VERSION
 fsum -r -jm -md5 -d%REPO% * > checksum.md5
 move checksum.md5 %REPO%\checksum.md5
 
-%ZIP% %REPO%_v%VERSION%_Anki20.zip *.py %REPO%\*
+REM %ZIP% %REPO%_v%VERSION%_Anki20.zip *.py %REPO%\*
 
 cd %REPO%
 
