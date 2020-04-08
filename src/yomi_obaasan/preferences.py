@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2013  Alex Yatskov
+# Copyright (C) 2020  Lovac42
+# Copyright (C) 2013-2017  Alex Yatskov
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from PyQt4 import QtGui, QtCore
 import copy
+from PyQt4 import QtGui, QtCore
 from .gen import preferences_ui
 
 
@@ -44,7 +44,6 @@ class DialogPreferences(QtGui.QDialog, preferences_ui.Ui_DialogPreferences):
 
 
     def dataToDialog(self):
-        # self.checkCheckForUpdates.setChecked(self.preferences['checkForUpdates'])
         self.checkRememberTextContent.setChecked(self.preferences['rememberTextContent'])
         self.checkAllowEditing.setChecked(self.preferences['allowEditing'])
         self.checkLoadRecentFile.setChecked(self.preferences['loadRecentFile'])
@@ -64,7 +63,6 @@ class DialogPreferences(QtGui.QDialog, preferences_ui.Ui_DialogPreferences):
 
 
     def dialogToData(self):
-        # self.preferences['checkForUpdates']     = self.checkCheckForUpdates.isChecked()
         self.preferences['rememberTextContent'] = self.checkRememberTextContent.isChecked()
         self.preferences['allowEditing']        = self.checkAllowEditing.isChecked()
         self.preferences['loadRecentFile']      = self.checkLoadRecentFile.isChecked()

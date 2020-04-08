@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2013  Alex Yatskov
+# Copyright (C) 2020  Lovac42
+# Copyright (C) 2013-2017  Alex Yatskov
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
