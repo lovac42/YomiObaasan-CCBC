@@ -1,7 +1,6 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2013  Alex Yatskov
+# Copyright (C) 2020  Lovac42
+# Copyright (C) 2013-2017  Alex Yatskov
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,32 +16,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# The files in this addon may have been modified for CCBC, and may not be the same as the original.
-# The files in this addon may have been modified for CCBC, and may not be the same as the original.
-# The files in this addon may have been modified for CCBC, and may not be the same as the original.
-# The files in this addon may have been modified for CCBC, and may not be the same as the original.
 
-
-
-
+import sys
 from PyQt4 import QtGui
 from . import japanese
 from .anki_connect import AnkiConnect
 from .preference_data import Preferences
 from .reader import MainWindowReader
-import sys
+from . import anki_bridge
 
 
-class Yomichan:
+
+class YomiObaasan:
     def __init__(self):
         self.language = japanese.initLanguage()
-
         self.preferences = Preferences()
-
-
-class YomichanPlugin(Yomichan):
-    def __init__(self):
-        Yomichan.__init__(self)
 
         self.toolIconVisible = False
         self.window          = None
@@ -80,3 +68,6 @@ class YomichanPlugin(Yomichan):
     def onWindowClose(self):
         self.window = None
 
+
+
+yomi = YomiObaasan()
