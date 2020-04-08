@@ -3,7 +3,7 @@ set ZIP=C:\PROGRA~1\7-Zip\7z.exe a -tzip -y -r
 set REPO=yomi_obaasan
 set NAME=yomiObaasan
 set PACKID=yomi_obaasan
-set VERSION=1.1.0b
+set VERSION=1.2.0b
 
 
 echo %VERSION% >%REPO%\VERSION
