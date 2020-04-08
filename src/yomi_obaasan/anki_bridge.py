@@ -21,44 +21,6 @@ import aqt
 import hashlib
 from urllib.request import urlopen, quote, URLError
 
-#
-# Audio helpers
-#
-
-def audioBuildFilename(kana, kanji):
-    filename = u'yomichan_{}'.format(kana)
-    if kanji:
-        filename += u'_{}'.format(kanji)
-    filename += u'.mp3'
-    return filename
-
-
-def audioDownload(kana, kanji):
-    url = 'http://assets.languagepod101.com/dictionary/japanese/audiomp3.php?kanji={}'.format(quote(kanji.encode('utf-8')))
-    if kana:
-        url += '&kana={}'.format(quote(kana.encode('utf-8')))
-
-    try:
-        resp = urlopen(url)
-    except URLError:
-        return None
-
-    if resp.code != 200:
-        return None
-
-    return resp.read()
-
-
-def audioIsPlaceholder(data):
-    m = hashlib.md5()
-    m.update(data)
-    return m.hexdigest() == '7e2c2f954ef6051373ba916f000168dc'
-
-
-def audioInject(note, fields, filename):
-    for field in fields:
-        if field in note:
-            note[field] += u'[sound:{}]'.format(filename)
 
 
 #
@@ -74,13 +36,6 @@ class Anki:
         note = self.createNote(deckName, modelName, fields, tags)
         if note is None:
             return
-
-        if audio is not None and len(audio['fields']) > 0:
-            data = audioDownload(audio['kana'], audio['kanji'])
-            if data is not None and not audioIsPlaceholder(data):
-                filename = audioBuildFilename(audio['kana'], audio['kanji'])
-                audioInject(note, audio['fields'], filename)
-                self.media().writeData(filename, data)
 
         self.startEditing()
         collection.addNote(note)
