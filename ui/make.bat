@@ -1,8 +1,6 @@
 call :build_ui about
 call :build_ui preferences
 call :build_ui reader
-call :build_ui updates
-pause
 exit
 
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
-# Copyright (C) 2013  Alex Yatskov
+# Copyright (C) 2020  Lovac42
+# Copyright (C) 2013-2017  Alex Yatskov
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,14 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import os
 from PyQt4 import QtGui, QtCore
 from . import about
 from . import constants
-from .gen import reader_ui
-import os
 from . import preferences
 from . import reader_util
-from . import updates
+from .gen import reader_ui
 
 
 class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
@@ -51,7 +50,6 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
         self.language    = language
         self.preferences = preferences
         self.state       = self.State()
-        self.updates     = updates.UpdateFinder()
         self.zoom        = 0
 
         self.applyPreferences()
@@ -88,10 +86,6 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
         self.textKanjiSearch.returnPressed.connect(self.onKanjiDefSearchReturn)
         self.textVocabDefs.anchorClicked.connect(self.onVocabDefsAnchorClicked)
         self.textVocabSearch.returnPressed.connect(self.onVocabDefSearchReturn)
-        self.updates.updateResult.connect(self.onUpdaterSearchResult)
-
-        # if self.preferences['checkForUpdates']:
-            # self.updates.start()
 
 
     def applyPreferences(self):
@@ -317,12 +311,6 @@ class MainWindowReader(QtGui.QMainWindow, reader_ui.Ui_MainWindowReader):
         self.actionToggleAnki.setChecked(self.dockAnki.isVisible())
         self.actionToggleVocab.setChecked(self.dockVocab.isVisible())
         self.actionToggleKanji.setChecked(self.dockKanji.isVisible())
-
-
-    def onUpdaterSearchResult(self, versions):
-        if versions['latest'] > constants.c['appVersion']:
-            dialog = updates.DialogUpdates(self, versions)
-            dialog.exec_()
 
 
     def onContentMouseMove(self, event):
