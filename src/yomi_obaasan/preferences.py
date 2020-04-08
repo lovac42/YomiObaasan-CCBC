@@ -49,7 +49,6 @@ class DialogPreferences(QtGui.QDialog, preferences_ui.Ui_DialogPreferences):
         self.checkLoadRecentFile.setChecked(self.preferences['loadRecentFile'])
         self.checkStripReadings.setChecked(self.preferences['stripReadings'])
         self.spinScanLength.setValue(self.preferences['scanLength'])
-        self.checkEnableAnkiConnect.setChecked(self.preferences['enableAnkiConnect'])
 
         self.updateSampleText()
         font = self.textSample.font()
@@ -68,7 +67,6 @@ class DialogPreferences(QtGui.QDialog, preferences_ui.Ui_DialogPreferences):
         self.preferences['loadRecentFile']      = self.checkLoadRecentFile.isChecked()
         self.preferences['scanLength']          = self.spinScanLength.value()
         self.preferences['stripReadings']       = self.checkStripReadings.isChecked()
-        self.preferences['enableAnkiConnect']   = self.checkEnableAnkiConnect.isChecked()
         self.preferences['firstRun']            = False
 
         if self.anki is not None:

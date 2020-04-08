@@ -20,7 +20,6 @@
 import sys
 from PyQt4 import QtGui
 from . import japanese
-from .anki_connect import AnkiConnect
 from .preference_data import Preferences
 from .reader import MainWindowReader
 from . import anki_bridge
@@ -36,7 +35,6 @@ class YomiObaasan:
         self.window          = None
         self.anki            = anki_bridge.Anki()
         self.parent          = self.anki.window()
-        self.ankiConnect     = AnkiConnect(self.anki, self.preferences)
 
         separator = QtGui.QAction(self.parent)
         separator.setSeparator(True)

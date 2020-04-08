@@ -2,7 +2,6 @@
     "allowEditing":        true,
     "bgColor":             4294967295,
     "checkForUpdates":     false,
-    "enableAnkiConnect":   false,
     "fgColor":             4278190080,
     "firstRun":            true,
     "fontFamily":          "Arial",
